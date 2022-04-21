@@ -1,0 +1,82 @@
+ValueError
+Python 3.9.7: E:\Anaconda3\envs\imgproapp\python.exe
+Sat Dec 25 19:35:27 2021
+
+A problem occurred in a Python script.  Here is the sequence of
+function calls leading up to the error, in the order they occurred.
+
+ E:\BaiduNetdiskWorkspace\Cloud_PythonProgramming\img-proc-app\gui\subgui_edit.py in apply(self=<gui.subgui_edit.Ui_SubWindow object>)
+ 1444             else:
+ 1445                 self.graphicsView.coverPixmap()
+ 1446                 self.graphicsView.CVdst.Q2CVimg(self.graphicsView.imQT)
+ 1447 
+ 1448         if self.graphicsView.CVdst.img is not None:
+self = <gui.subgui_edit.Ui_SubWindow object>
+self.graphicsView = <widgets.ImgView.ImgView object>
+self.graphicsView.CVdst = <plugins.ipc.AppImg object>
+self.graphicsView.CVdst.Q2CVimg = <bound method AppImg.Q2CVimg of <plugins.ipc.AppImg object>>
+self.graphicsView.imQT = <PyQt5.QtGui.QImage object>
+
+ E:\BaiduNetdiskWorkspace\Cloud_PythonProgramming\img-proc-app\plugins\ipc.py in Q2CVimg(self=<plugins.ipc.AppImg object>, Qimg=<PyQt5.QtGui.QImage object>)
+  107                 ptr = Qimg.bits()
+  108                 ptr.setsize(Qimg.byteCount())
+  109                 CVimg = array(ptr, dtype=uint8).reshape(temp_shape)
+  110                 CVimg = CVimg[..., ::-1]
+  111 
+CVimg undefined
+global array = <built-in function array>
+ptr = <sip.voidptr object>
+dtype undefined
+global uint8 = <class 'numpy.uint8'>
+).reshape = <method 'reshape' of 'numpy.generic' objects>
+temp_shape = (945, 1602, 3)
+ValueError: cannot reshape array of size 4543560 into shape (945,1602,3)
+    __cause__ = None
+    __class__ = <class 'ValueError'>
+    __context__ = ValueError('cannot reshape array of size 4543560 into shape (945,1602,4)')
+    __delattr__ = <method-wrapper '__delattr__' of ValueError object>
+    __dict__ = {}
+    __dir__ = <built-in method __dir__ of ValueError object>
+    __doc__ = 'Inappropriate argument value (of correct type).'
+    __eq__ = <method-wrapper '__eq__' of ValueError object>
+    __format__ = <built-in method __format__ of ValueError object>
+    __ge__ = <method-wrapper '__ge__' of ValueError object>
+    __getattribute__ = <method-wrapper '__getattribute__' of ValueError object>
+    __gt__ = <method-wrapper '__gt__' of ValueError object>
+    __hash__ = <method-wrapper '__hash__' of ValueError object>
+    __init__ = <method-wrapper '__init__' of ValueError object>
+    __init_subclass__ = <built-in method __init_subclass__ of type object>
+    __le__ = <method-wrapper '__le__' of ValueError object>
+    __lt__ = <method-wrapper '__lt__' of ValueError object>
+    __ne__ = <method-wrapper '__ne__' of ValueError object>
+    __new__ = <built-in method __new__ of type object>
+    __reduce__ = <built-in method __reduce__ of ValueError object>
+    __reduce_ex__ = <built-in method __reduce_ex__ of ValueError object>
+    __repr__ = <method-wrapper '__repr__' of ValueError object>
+    __setattr__ = <method-wrapper '__setattr__' of ValueError object>
+    __setstate__ = <built-in method __setstate__ of ValueError object>
+    __sizeof__ = <built-in method __sizeof__ of ValueError object>
+    __str__ = <method-wrapper '__str__' of ValueError object>
+    __subclasshook__ = <built-in method __subclasshook__ of type object>
+    __suppress_context__ = False
+    __traceback__ = <traceback object>
+    args = ('cannot reshape array of size 4543560 into shape (945,1602,3)',)
+    with_traceback = <built-in method with_traceback of ValueError object>
+
+The above is a description of an error in a Python program.  Here is
+the original traceback:
+
+Traceback (most recent call last):
+  File "E:\BaiduNetdiskWorkspace\Cloud_PythonProgramming\img-proc-app\plugins\ipc.py", line 102, in Q2CVimg
+    CVimg = array(ptr, dtype=uint8).reshape(temp_shape)
+ValueError: cannot reshape array of size 4543560 into shape (945,1602,4)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\BaiduNetdiskWorkspace\Cloud_PythonProgramming\img-proc-app\gui\subgui_edit.py", line 1446, in apply
+    self.graphicsView.CVdst.Q2CVimg(self.graphicsView.imQT)
+  File "E:\BaiduNetdiskWorkspace\Cloud_PythonProgramming\img-proc-app\plugins\ipc.py", line 109, in Q2CVimg
+    CVimg = array(ptr, dtype=uint8).reshape(temp_shape)
+ValueError: cannot reshape array of size 4543560 into shape (945,1602,3)
+

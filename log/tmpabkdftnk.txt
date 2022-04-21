@@ -1,0 +1,79 @@
+AttributeError
+Python 3.9.7: E:\Anaconda3\envs\imgproapp\python.exe
+Thu Dec  9 11:56:17 2021
+
+A problem occurred in a Python script.  Here is the sequence of
+function calls leading up to the error, in the order they occurred.
+
+ E:\BaiduNetdiskWorkspace\Cloud_PythonProgramming\img-proc-app\gui\maingui_edit.py in about(self=<gui.maingui_edit.Ui_MainWindow object>)
+  620         '''
+  621         self.AboutDialog = QtWidgets.QDialog()
+  622         self.AboutDialog = Ui_About()
+  623         self.AboutDialog.exec_()
+  624 
+self = <gui.maingui_edit.Ui_MainWindow object>
+self.AboutDialog = <PyQt5.QtWidgets.QDialog object>
+global Ui_About = <class 'gui.about_edit.Ui_About'>
+
+ E:\BaiduNetdiskWorkspace\Cloud_PythonProgramming\img-proc-app\gui\about_edit.py in __init__(self=<gui.about_edit.Ui_About object>)
+    7     def __init__(self):
+    8         super(Ui_About, self).__init__()
+    9         self.setupUi(self)  # 括号里必须有self
+   10 
+   11     def setupUi(self, About_Dialog):
+self = <gui.about_edit.Ui_About object>
+self.setupUi = <bound method Ui_About.setupUi of <gui.about_edit.Ui_About object>>
+
+ E:\BaiduNetdiskWorkspace\Cloud_PythonProgramming\img-proc-app\gui\about_edit.py in setupUi(self=<gui.about_edit.Ui_About object>, About_Dialog=<gui.about_edit.Ui_About object>)
+   10 
+   11     def setupUi(self, About_Dialog):
+   12         About_Dialog.setObjectName("About_Dialog")
+   13         About_Dialog.resize(400, 300)
+   14 
+About_Dialog = <gui.about_edit.Ui_About object>
+About_Dialog.setObjectName undefined
+AttributeError: 'Ui_About' object has no attribute 'setObjectName'
+    __cause__ = None
+    __class__ = <class 'AttributeError'>
+    __context__ = None
+    __delattr__ = <method-wrapper '__delattr__' of AttributeError object>
+    __dict__ = {}
+    __dir__ = <built-in method __dir__ of AttributeError object>
+    __doc__ = 'Attribute not found.'
+    __eq__ = <method-wrapper '__eq__' of AttributeError object>
+    __format__ = <built-in method __format__ of AttributeError object>
+    __ge__ = <method-wrapper '__ge__' of AttributeError object>
+    __getattribute__ = <method-wrapper '__getattribute__' of AttributeError object>
+    __gt__ = <method-wrapper '__gt__' of AttributeError object>
+    __hash__ = <method-wrapper '__hash__' of AttributeError object>
+    __init__ = <method-wrapper '__init__' of AttributeError object>
+    __init_subclass__ = <built-in method __init_subclass__ of type object>
+    __le__ = <method-wrapper '__le__' of AttributeError object>
+    __lt__ = <method-wrapper '__lt__' of AttributeError object>
+    __ne__ = <method-wrapper '__ne__' of AttributeError object>
+    __new__ = <built-in method __new__ of type object>
+    __reduce__ = <built-in method __reduce__ of AttributeError object>
+    __reduce_ex__ = <built-in method __reduce_ex__ of AttributeError object>
+    __repr__ = <method-wrapper '__repr__' of AttributeError object>
+    __setattr__ = <method-wrapper '__setattr__' of AttributeError object>
+    __setstate__ = <built-in method __setstate__ of AttributeError object>
+    __sizeof__ = <built-in method __sizeof__ of AttributeError object>
+    __str__ = <method-wrapper '__str__' of AttributeError object>
+    __subclasshook__ = <built-in method __subclasshook__ of type object>
+    __suppress_context__ = False
+    __traceback__ = <traceback object>
+    args = ("'Ui_About' object has no attribute 'setObjectName'",)
+    with_traceback = <built-in method with_traceback of AttributeError object>
+
+The above is a description of an error in a Python program.  Here is
+the original traceback:
+
+Traceback (most recent call last):
+  File "E:\BaiduNetdiskWorkspace\Cloud_PythonProgramming\img-proc-app\gui\maingui_edit.py", line 622, in about
+    self.AboutDialog = Ui_About()
+  File "E:\BaiduNetdiskWorkspace\Cloud_PythonProgramming\img-proc-app\gui\about_edit.py", line 9, in __init__
+    self.setupUi(self)  # 括号里必须有self
+  File "E:\BaiduNetdiskWorkspace\Cloud_PythonProgramming\img-proc-app\gui\about_edit.py", line 12, in setupUi
+    About_Dialog.setObjectName("About_Dialog")
+AttributeError: 'Ui_About' object has no attribute 'setObjectName'
+

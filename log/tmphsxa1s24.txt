@@ -1,0 +1,65 @@
+TypeError
+Python 3.9.7: E:\Anaconda3\envs\imgproapp\python.exe
+Fri Dec 24 17:04:44 2021
+
+A problem occurred in a Python script.  Here is the sequence of
+function calls leading up to the error, in the order they occurred.
+
+ E:\BaiduNetdiskWorkspace\Cloud_PythonProgramming\img-proc-app\gui\subgui_edit.py in reset(self=<gui.subgui_edit.Ui_SubWindow object>)
+  672 
+  673         self.graphicsView.imItem.setPos(0, 0)  # 重设场景矩形范围并设置位置
+  674         self.graphicsView.scene.setSceneRect(self.graphicsView.imItem.pixmap().rect())
+  675 
+  676         self.graphicsView.CVdst.img = None
+self = <gui.subgui_edit.Ui_SubWindow object>
+self.graphicsView = <widgets.ImgView.ImgView object>
+self.graphicsView.scene = <PyQt5.QtWidgets.QGraphicsScene object>
+self.graphicsView.scene.setSceneRect = <built-in method setSceneRect of QGraphicsScene object>
+self.graphicsView.imItem = <widgets.ImgView.ImgPixmapItem object>
+self.graphicsView.imItem.pixmap = <built-in method pixmap of ImgPixmapItem object>
+).rect undefined
+TypeError: arguments did not match any overloaded call:
+  setSceneRect(self, QRectF): argument 1 has unexpected type 'QRect'
+  setSceneRect(self, float, float, float, float): argument 1 has unexpected type 'QRect'
+    __cause__ = None
+    __class__ = <class 'TypeError'>
+    __context__ = None
+    __delattr__ = <method-wrapper '__delattr__' of TypeError object>
+    __dict__ = {}
+    __dir__ = <built-in method __dir__ of TypeError object>
+    __doc__ = 'Inappropriate argument type.'
+    __eq__ = <method-wrapper '__eq__' of TypeError object>
+    __format__ = <built-in method __format__ of TypeError object>
+    __ge__ = <method-wrapper '__ge__' of TypeError object>
+    __getattribute__ = <method-wrapper '__getattribute__' of TypeError object>
+    __gt__ = <method-wrapper '__gt__' of TypeError object>
+    __hash__ = <method-wrapper '__hash__' of TypeError object>
+    __init__ = <method-wrapper '__init__' of TypeError object>
+    __init_subclass__ = <built-in method __init_subclass__ of type object>
+    __le__ = <method-wrapper '__le__' of TypeError object>
+    __lt__ = <method-wrapper '__lt__' of TypeError object>
+    __ne__ = <method-wrapper '__ne__' of TypeError object>
+    __new__ = <built-in method __new__ of type object>
+    __reduce__ = <built-in method __reduce__ of TypeError object>
+    __reduce_ex__ = <built-in method __reduce_ex__ of TypeError object>
+    __repr__ = <method-wrapper '__repr__' of TypeError object>
+    __setattr__ = <method-wrapper '__setattr__' of TypeError object>
+    __setstate__ = <built-in method __setstate__ of TypeError object>
+    __sizeof__ = <built-in method __sizeof__ of TypeError object>
+    __str__ = <method-wrapper '__str__' of TypeError object>
+    __subclasshook__ = <built-in method __subclasshook__ of type object>
+    __suppress_context__ = False
+    __traceback__ = <traceback object>
+    args = ("arguments did not match any overloaded call:\n  s...t, float): argument 1 has unexpected type 'QRect'",)
+    with_traceback = <built-in method with_traceback of TypeError object>
+
+The above is a description of an error in a Python program.  Here is
+the original traceback:
+
+Traceback (most recent call last):
+  File "E:\BaiduNetdiskWorkspace\Cloud_PythonProgramming\img-proc-app\gui\subgui_edit.py", line 674, in reset
+    self.graphicsView.scene.setSceneRect(self.graphicsView.imItem.pixmap().rect())
+TypeError: arguments did not match any overloaded call:
+  setSceneRect(self, QRectF): argument 1 has unexpected type 'QRect'
+  setSceneRect(self, float, float, float, float): argument 1 has unexpected type 'QRect'
+
