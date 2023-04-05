@@ -13,7 +13,7 @@ if __name__ == '__main__':
 
     app = QApplication(sys.argv)
 
-    MainGUI = Ui_MainWindow()
+    MainGUI = Ui_MainWindow(sys.platform)
     MainGUI.show()
 
     sys.exit(app.exec_())

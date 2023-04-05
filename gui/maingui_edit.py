@@ -26,8 +26,11 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
     在designer自动生成的代码
     基础上修改编写
     '''
-    def __init__(self):
+    def __init__(self, platform):
         super(Ui_MainWindow, self).__init__()
+        self.Platform = platform  # 运行平台
+        self.InputDir = './InputImages'  # 图像输入路径
+        self.OutputDir = './OutputImages'  # 图像输出路径
         self.Clipboard = QtWidgets.QApplication.clipboard()  # 图像剪贴板
         self.scale4CV = 1  # 面积缩放系数，操作CVImage结果可保存
         self.RefreshFlag = True  # 刷新标识符，打开新图片默认结果图窗刷新
@@ -402,7 +405,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         以QImage格式打开图片并显示
         '''
         self.frame.dir_img, _filter = \
-            QtWidgets.QFileDialog.getOpenFileName(self, '打开', './InputImages',
+            QtWidgets.QFileDialog.getOpenFileName(self, '打开', self.InputDir,
                                                   'PNG 文件(*.png);; JPG 文件(*.jpg);; JPEG 文件(*.jpeg);; 所有 文件(*.*)',
                                                   '所有 文件(*.*)')
         self.frame_2.dir_img = None  # 每次打开文件，初始化保存路径及文件名
@@ -429,7 +432,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         if self.frame_2.CV.img is not None:
             if self.frame_2.dir_img is None or self.frame_2.dir_img == '':
                 self.frame_2.dir_img, _filter = \
-                    QtWidgets.QFileDialog.getSaveFileName(self, '保存', './OutputImages',
+                    QtWidgets.QFileDialog.getSaveFileName(self, '保存', self.OutputDir,
                                                           'PNG 文件(*.png);; JPG 文件(*.jpg);; JPEG 文件(*.jpeg)',
                                                           'JPG 文件(*.jpg)')
             self.frame_2.CV.saveimg(self.frame_2.dir_img)
@@ -441,7 +444,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         '''
         if self.frame_2.CV.img is not None:
             filepath, _filter = \
-                QtWidgets.QFileDialog.getSaveFileName(self, '保存', './OutputImages',
+                QtWidgets.QFileDialog.getSaveFileName(self, '保存', self.OutputDir,
                                                       'PNG 文件(*.png);; JPG 文件(*.jpg);; JPEG 文件(*.jpeg)',
                                                       'JPG 文件(*.jpg)')
             self.frame_2.CV.saveimg(filepath)
@@ -465,7 +468,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         '''
         新建MainWindow 图像处理小工具窗口
         '''
-        self.NewWindow = Ui_MainWindow()
+        self.NewWindow = Ui_MainWindow(self.Platform)
         self.NewWindow.show()
 
     def blur(self):
