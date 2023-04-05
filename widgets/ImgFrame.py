@@ -1,3 +1,4 @@
+import datetime
 from PyQt5 import QtCore, QtGui, QtWidgets
 from numpy import sqrt
 from plugins import AppImg
@@ -122,11 +123,16 @@ class ImgFrame(QtWidgets.QFrame):
         从Word中拖入的图片直接QImage转换
         从本地资源浏览器拖入的图片需要先转出LocalFile路径然后打开
         '''
+        now = datetime.datetime.now()
+        filename = "./InputImages/" + "Drop " + now.strftime("%Y-%m-%d %H-%M-%S") + ".png"
+
         if event.mimeData().hasImage():
             self.imQT = QtGui.QImage(event.mimeData().imageData())
+            self.imQT.save(filename)
         elif event.mimeData().hasUrls():
             self.dir_img = event.mimeData().urls()[0].toLocalFile()
             self.imQT = QtGui.QImage(self.dir_img)
+            self.imQT.save(filename)
         self.CV.Q2CVimg(self.imQT)
         self.repaint()
 

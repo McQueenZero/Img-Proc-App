@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import os
 from numpy import sin, cos, abs, deg2rad, round, uint8
 from PyQt5 import QtCore, QtGui, QtWidgets
 from widgets import ImgView
@@ -629,11 +630,20 @@ class Ui_SubWindow(QtWidgets.QWidget):
             filepath, _filter = \
                 QtWidgets.QFileDialog.getSaveFileName(self, '保存', './OutputImages', 'PNG 文件(*.png)')
         else:
+            if self.MainWindow.filename:
+                _, ext = os.path.splitext(self.MainWindow.filename)
+                if ext == ".jpeg":
+                    ext_str = 'JPEG 文件(*.jpeg)'
+                elif ext == ".png":
+                    ext_str = 'PNG 文件(*.png)'
+                else:
+                    ext_str = 'JPG 文件(*.jpg)'
+            else:
+                ext_str = '所有 文件(*.*)'
             filepath, _filter = \
-                QtWidgets.QFileDialog.getSaveFileName(self, '保存', './OutputImages',
+                QtWidgets.QFileDialog.getSaveFileName(self, '保存', self.MainWindow.OutputDir,
                                                       'PNG 文件(*.png);; JPG 文件(*.jpg);; JPEG 文件(*.jpeg)',
-                                                      'JPG 文件(*.jpg)')
-
+                                                      ext_str)
         pixmap_crop.save(filepath)
 
     def cancel(self):
@@ -1467,11 +1477,17 @@ class Ui_SubWindow(QtWidgets.QWidget):
         打开文件槽函数
         '''
         filepath, _filter = \
-            QtWidgets.QFileDialog.getOpenFileName(self, '打开', './InputImages',
+            QtWidgets.QFileDialog.getOpenFileName(self, '打开', self.MainWindow.InputDir,
                                                   'PNG 文件(*.png);; JPG 文件(*.jpg);; JPEG 文件(*.jpeg);; 所有 文件(*.*)',
                                                   '所有 文件(*.*)')
         shape = self.graphicsView.imItem.drawShape
         if filepath:
+            self.MainWindow.InputDir = os.path.dirname(filepath)
+            self.MainWindow.filename = os.path.basename(filepath)
+            filename, ext = os.path.splitext(self.MainWindow.filename)
+            new_filename = filename + "_edit" + ext
+            self.MainWindow.OutputDir = os.path.dirname(filepath) + '/' + new_filename
+
             if self.ModeFlag == 3 and (shape == 10 or shape == 11):
                 self.graphicsView.imItem.map_dir = filepath
             else:

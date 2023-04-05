@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import os
+import datetime
 from PyQt5 import QtCore, QtGui, QtWidgets
 from widgets import ImgFrame
 from gui import Ui_SubWindow, Ui_About
@@ -11,6 +12,7 @@ class CntFcn:
     '''
     记录某一函数的调用次数
     '''
+
     def __init__(self, fcn):
         self.calls = 0
         self.fcn = fcn
@@ -26,11 +28,13 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
     在designer自动生成的代码
     基础上修改编写
     '''
+
     def __init__(self, platform):
         super(Ui_MainWindow, self).__init__()
         self.Platform = platform  # 运行平台
         self.InputDir = './InputImages'  # 图像输入路径
         self.OutputDir = './OutputImages'  # 图像输出路径
+        self.filename = None  # 图像文件名，含扩展名
         self.Clipboard = QtWidgets.QApplication.clipboard()  # 图像剪贴板
         self.scale4CV = 1  # 面积缩放系数，操作CVImage结果可保存
         self.RefreshFlag = True  # 刷新标识符，打开新图片默认结果图窗刷新
@@ -408,12 +412,16 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
             QtWidgets.QFileDialog.getOpenFileName(self, '打开', self.InputDir,
                                                   'PNG 文件(*.png);; JPG 文件(*.jpg);; JPEG 文件(*.jpeg);; 所有 文件(*.*)',
                                                   '所有 文件(*.*)')
+
         self.frame_2.dir_img = None  # 每次打开文件，初始化保存路径及文件名
+
         if self.frame.dir_img:
-            # ext_index = self.frame.dir_img.rfind('.')
-            # ext = self.frame.dir_img[ext_index+1:]
-            # if ext == 'png':
-            #     pass
+            self.InputDir = os.path.dirname(self.frame.dir_img)
+            self.filename = os.path.basename(self.frame.dir_img)
+            filename, ext = os.path.splitext(self.filename)
+            new_filename = filename + "_edit" + ext
+            self.OutputDir = os.path.dirname(self.frame.dir_img) + '/' + new_filename
+
             self.frame.CV.loadimg(self.frame.dir_img)
             # 发现QtGui.QImage可以直接根据文件名读取图片
             self.frame.imQT = QtGui.QImage(self.frame.dir_img)  # 省去用OPENCV读再转换的一步
@@ -431,10 +439,19 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         '''
         if self.frame_2.CV.img is not None:
             if self.frame_2.dir_img is None or self.frame_2.dir_img == '':
-                self.frame_2.dir_img, _filter = \
-                    QtWidgets.QFileDialog.getSaveFileName(self, '保存', self.OutputDir,
-                                                          'PNG 文件(*.png);; JPG 文件(*.jpg);; JPEG 文件(*.jpeg)',
-                                                          'JPG 文件(*.jpg)')
+                if self.filename:
+                    _, ext = os.path.splitext(self.filename)
+                    if ext == ".jpeg":
+                        ext_str = 'JPEG 文件(*.jpeg)'
+                    elif ext == ".png":
+                        ext_str = 'PNG 文件(*.png)'
+                    else:
+                        ext_str = 'JPG 文件(*.jpg)'
+                else:
+                    ext_str = '所有 文件(*.*)'
+                QtWidgets.QFileDialog.getSaveFileName(self, '保存', self.OutputDir,
+                                                      'PNG 文件(*.png);; JPG 文件(*.jpg);; JPEG 文件(*.jpeg)',
+                                                      ext_str)
             self.frame_2.CV.saveimg(self.frame_2.dir_img)
 
     def save_as(self):
@@ -443,10 +460,20 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         每次点击都会跳出资源浏览器重新保存
         '''
         if self.frame_2.CV.img is not None:
+            if self.filename:
+                _, ext = os.path.splitext(self.filename)
+                if ext == "jpeg":
+                    ext_str = 'JPEG 文件(*.jpeg)'
+                elif ext == "png":
+                    ext_str = 'PNG 文件(*.png)'
+                else:
+                    ext_str = 'JPG 文件(*.jpg)'
+            else:
+                ext_str = '所有 文件(*.*)'
             filepath, _filter = \
                 QtWidgets.QFileDialog.getSaveFileName(self, '保存', self.OutputDir,
                                                       'PNG 文件(*.png);; JPG 文件(*.jpg);; JPEG 文件(*.jpeg)',
-                                                      'JPG 文件(*.jpg)')
+                                                      ext_str)
             self.frame_2.CV.saveimg(filepath)
 
     def copy(self):
@@ -461,8 +488,15 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         粘贴图像槽函数
         '''
         self.frame.imQT = self.Clipboard.image()
-        self.frame.CV.Q2CVimg(self.frame.imQT)
-        self.frame.repaint()
+        if not self.frame.imQT.isNull():
+            now = datetime.datetime.now()
+            filename = "Clipboard " + now.strftime("%Y-%m-%d %H-%M-%S") + ".png"
+            self.InputDir = "./InputImages" + '/' + filename
+            self.OutputDir = "./OutputImages"
+            self.frame.imQT.save(self.InputDir)
+
+            self.frame.CV.Q2CVimg(self.frame.imQT)
+            self.frame.repaint()
 
     def new(self):
         '''
@@ -628,4 +662,3 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         '''
         self.AboutDialog = Ui_About()
         self.AboutDialog.exec_()
-
