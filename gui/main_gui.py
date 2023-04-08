@@ -449,9 +449,11 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
                         ext_str = 'JPG 文件(*.jpg)'
                 else:
                     ext_str = '所有 文件(*.*)'
-                QtWidgets.QFileDialog.getSaveFileName(self, '保存', self.OutputDir,
+                self.frame_2.dir_img, _filter = \
+                    QtWidgets.QFileDialog.getSaveFileName(self, '保存', self.OutputDir,
                                                       'PNG 文件(*.png);; JPG 文件(*.jpg);; JPEG 文件(*.jpeg)',
                                                       ext_str)
+                self.OutputDir = self.frame_2.dir_img
             self.frame_2.CV.saveimg(self.frame_2.dir_img)
 
     def save_as(self):
@@ -474,6 +476,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
                 QtWidgets.QFileDialog.getSaveFileName(self, '保存', self.OutputDir,
                                                       'PNG 文件(*.png);; JPG 文件(*.jpg);; JPEG 文件(*.jpeg)',
                                                       ext_str)
+            self.OutputDir = filepath
             self.frame_2.CV.saveimg(filepath)
 
     def copy(self):
@@ -538,7 +541,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
             else:
                 _, _, self.frame_2.CV.img = ipc.channel_extract(self.frame.CV.img)
 
-        self.disp(self.frame_2)
+        self.disp(self.frame_2, GRAYFLAG=True)
 
     def sharpen(self):
         '''

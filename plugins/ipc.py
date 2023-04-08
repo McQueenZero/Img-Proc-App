@@ -156,12 +156,15 @@ def channel_extract(imSrc):
     '''
     if imSrc is not None and imSrc.data is not None:
         b, g, r = split(imSrc)
-        imDst_b = merge([b, zeros(b.shape, uint8), zeros(b.shape, uint8)])
-        imDst_g = merge([zeros(g.shape, uint8), g, zeros(g.shape, uint8)])
-        imDst_r = merge([zeros(r.shape, uint8), zeros(r.shape, uint8), r])
+        # imDst_b = merge([b, zeros(b.shape, uint8), zeros(b.shape, uint8)])
+        # imDst_g = merge([zeros(g.shape, uint8), g, zeros(g.shape, uint8)])
+        # imDst_r = merge([zeros(r.shape, uint8), zeros(r.shape, uint8), r])
         # imDst_b = merge([b, b, b])
         # imDst_g = merge([g, g, g])
         # imDst_r = merge([r, r, r])
+        imDst_b = b
+        imDst_g = g
+        imDst_r = r
 
         return imDst_r, imDst_g, imDst_b
 

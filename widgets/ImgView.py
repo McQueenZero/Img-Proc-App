@@ -31,10 +31,10 @@ class ImgView(QtWidgets.QGraphicsView):
         self.CVdst = AppImg()  # AppImg的CV格式处理结果图片
         self.imQT = self.CVsrc.CV2Qimg()  # QImage格式图片
 
-        self.scene = QtWidgets.QGraphicsScene()
+        self.scene = QtWidgets.QGraphicsScene()  # 画布
         self.setScene(self.scene)
 
-        self.imItem = ImgPixmapItem(QtGui.QPixmap(self.imQT))
+        self.imItem = ImgPixmapItem(QtGui.QPixmap(self.imQT))  # 画
         self.s_old = QtCore.QSize(self.imItem.pixmap().width(),
                                   self.imItem.pixmap().height())  # ImgView的前一步Size
         self.k_rec = 1  # 记录滚轮放缩系数，用于旋转适应放缩及重置

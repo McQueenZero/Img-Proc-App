@@ -36,12 +36,12 @@ class Ui_About(QtWidgets.QDialog):
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
         Dialog.setWindowTitle(_translate("Dialog", "软件信息"))
-        self.label_Info.setText(_translate("Dialog", "图像处理小工具 Version 1.0.0 \n"
+        self.label_Info.setText(_translate("Dialog", "图像处理小工具 Version 1.0.5 \n"
         "\n"
         "\n"
         "\n"
-        "作者：赵敏琨 学号 2018302068 自动化学院\n"
+        "作者：赵敏琨 学号 2022202443 自动化学院\n"
         "\n"
         "\n"
         "\n"
-        "Copyright (C) 2021 Minkun Zhao. All Rights Reserved."))
+        "Copyright (C) 2023 Minkun Zhao. All Rights Reserved."))

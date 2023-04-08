@@ -628,7 +628,8 @@ class Ui_SubWindow(QtWidgets.QWidget):
 
         if self.graphicsView.imItem.pngFlag:
             filepath, _filter = \
-                QtWidgets.QFileDialog.getSaveFileName(self, '保存', './OutputImages', 'PNG 文件(*.png)')
+                QtWidgets.QFileDialog.getSaveFileName(self, '保存', self.MainWindow.OutputDir, 'PNG 文件(*.png)')
+            self.MainWindow.OutputDir = filepath
         else:
             if self.MainWindow.filename:
                 _, ext = os.path.splitext(self.MainWindow.filename)
@@ -644,6 +645,7 @@ class Ui_SubWindow(QtWidgets.QWidget):
                 QtWidgets.QFileDialog.getSaveFileName(self, '保存', self.MainWindow.OutputDir,
                                                       'PNG 文件(*.png);; JPG 文件(*.jpg);; JPEG 文件(*.jpeg)',
                                                       ext_str)
+            self.MainWindow.OutputDir = filepath
         pixmap_crop.save(filepath)
 
     def cancel(self):
