@@ -36,7 +36,7 @@ class Ui_About(QtWidgets.QDialog):
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
         Dialog.setWindowTitle(_translate("Dialog", "软件信息"))
-        self.label_Info.setText(_translate("Dialog", "图像处理小工具 Version 1.0.5 \n"
+        self.label_Info.setText(_translate("Dialog", "图像处理小工具 Version 1.0.7 \n"
         "\n"
         "\n"
         "\n"
