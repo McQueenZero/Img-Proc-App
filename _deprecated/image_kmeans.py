@@ -2,7 +2,7 @@ import numpy as np
 import cv2
 
 if __name__ == '__main__':
-    path = "./InputImages/Fennec Fox.jpg"
+    path = "../InputImages/色图.jpg"
     img = cv2.imdecode(np.fromfile(path, dtype=np.uint8), -1)
     # img = cv2.imread(path)
     h, w, ch = img.shape
