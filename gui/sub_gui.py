@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import os
+import sys
 from numpy import sin, cos, abs, deg2rad, round, uint8
 from PyQt5 import QtCore, QtGui, QtWidgets
 from widgets import ImgView
@@ -21,8 +22,13 @@ class Ui_SubWindow(QtWidgets.QWidget):
         self.deg_old = 0  # 上一步的滑条旋转值，用于调试时计算旋转增量
         self.w_img4view, self.h_img4view = 512, 512  # 缩放到图窗中的图片宽和高，初值任意
         self.ModeFlag = 0  # 模式标识符
+        self.AspectRatio = None  # 记录长宽比
         self.Color = QtGui.QColor('black')  # 记录颜色
-        self.Font = QtGui.QFont('黑体', 32)  # 记录字体
+        if sys.platform.startswith('win'):
+            self.Font = QtGui.QFont('黑体', 32)  # 记录字体
+        elif sys.platform.startswith('linux'):
+            self.Font = QtGui.QFont('Noto Sans CJK SC', 32)  # 记录字体
+        self.PenWidthTick = 5  # 记录笔刷粗细刻度
         self.Shape = 0  # 记录形状编号
         self.k_trans = 1  # 校正比例记录
         self.setupUi(self, MainWindow)
@@ -358,7 +364,9 @@ class Ui_SubWindow(QtWidgets.QWidget):
             self.pushButton_F1.setEnabled(True)
             self.pushButton_F2.setEnabled(True)
 
-        self.textEdit.hide()
+        self.textEdit.show()
+        self.textEdit.setEnabled(True)
+        self.textEdit.textChanged.connect(self.aspectratioset)
         self.comboBox.hide()
 
         FcnObjs = [self.pushButton_1, self.pushButton_2, self.pushButton_3,
@@ -704,21 +712,26 @@ class Ui_SubWindow(QtWidgets.QWidget):
         用于传送固定宽高比
         '''
         if self.pushButton_1.isChecked():
-            ar = self.graphicsView.imItem.pixmap().width() / self.graphicsView.imItem.pixmap().height()
+            self.textEdit.setEnabled(False)
+            self.aspectratioset(self.graphicsView.imItem.pixmap().width() / self.graphicsView.imItem.pixmap().height())
         elif self.pushButton_2.isChecked():
-            ar = 1
+            self.textEdit.setEnabled(False)
+            self.aspectratioset(1)
         elif self.pushButton_3.isChecked():
-            ar = 16 / 9
+            self.textEdit.setEnabled(False)
+            self.aspectratioset(16 / 9)
         elif self.pushButton_4.isChecked():
-            ar = 9 / 16
+            self.textEdit.setEnabled(False)
+            self.aspectratioset(9 / 16)
         elif self.pushButton_5.isChecked():
-            ar = 4 / 3
+            self.textEdit.setEnabled(False)
+            self.aspectratioset(4 / 3)
         elif self.pushButton_6.isChecked():
-            ar = 3 / 4
+            self.textEdit.setEnabled(False)
+            self.aspectratioset(3 / 4)
         else:
-            ar = None
-
-        self.graphicsView.imItem.AspectRatio = ar
+            self.textEdit.setEnabled(True)
+            self.aspectratioset()
 
     def rotate(self):
         '''
@@ -805,6 +818,41 @@ class Ui_SubWindow(QtWidgets.QWidget):
             self.graphicsView.CVdst.img = ipc.sym_flip(imDst, flipCode)
 
         self.disp()
+
+    def aspectratioset(self, ar=None):
+        '''
+        设置长宽比率槽函数
+        '''
+        if ar is None:
+            input_str = self.textEdit.toPlainText()
+            if ':' in input_str:
+                input_list = input_str.split(':')
+
+                if len(input_list) != 2:
+                    self.textEdit.setText("格式错误！提示：先输入全部数字，后输入冒号")
+                    self.graphicsView.imItem.AspectRatio = ar
+                    self.AspectRatio = ar
+                    return
+
+                try:
+                    width = int(input_list[0])
+                    height = int(input_list[1])
+                except ValueError:
+                    self.textEdit.setText("格式错误！提示：先输入全部数字，后输入冒号")
+                    self.graphicsView.imItem.AspectRatio = ar
+                    self.AspectRatio = ar
+                    return
+
+                if width < 0 or height <= 0:
+                    self.textEdit.setText("格式错误！提示：先输入全部数字，后输入冒号")
+                    self.graphicsView.imItem.AspectRatio = ar
+                    self.AspectRatio = ar
+                    return
+
+                ar = width / height
+
+        self.graphicsView.imItem.AspectRatio = ar
+        self.AspectRatio = ar
 
     def filter(self):
         '''
@@ -1078,7 +1126,7 @@ class Ui_SubWindow(QtWidgets.QWidget):
             self.pushButton_F2.setEnabled(True)
             self.pushButton_F2.setCheckable(True)
             self.pushButton_F2.clicked.connect(self.penwidthset)
-            self.penwidthpicker()
+            self.penwidthpicker(self.PenWidthTick)
 
             self.textEdit.setEnabled(False)
             shapes = dict(enumerate(
@@ -1284,7 +1332,7 @@ class Ui_SubWindow(QtWidgets.QWidget):
             self.horizontalSlider.setValue(5)
             self.horizontalSlider.valueChanged.connect(
                 lambda: self.penwidthpicker(tick=self.horizontalSlider.value()))
-            self.penwidthpicker()
+            self.penwidthpicker(self.PenWidthTick)
         else:
             self.label_Function.setText('颜色')
             self.horizontalSlider.setValue(0)
@@ -1306,6 +1354,7 @@ class Ui_SubWindow(QtWidgets.QWidget):
         widths = [round(width, 2) for width in widths]
         self.graphicsView.imItem.penWidthF = widths[tick]
         self.label_Unit.setText(str(widths[tick]))
+        self.PenWidthTick = tick
 
     def shapeset(self, value):
         '''
@@ -1490,7 +1539,7 @@ class Ui_SubWindow(QtWidgets.QWidget):
             new_filename = filename + "_edit" + ext
             self.MainWindow.OutputDir = os.path.dirname(filepath) + '/' + new_filename
 
-            if self.ModeFlag == 3 and (shape == 10 or shape == 11):
+            if self.ModeFlag == 3 and self.pushButton_2.isChecked() and (shape == 10 or shape == 11):
                 self.graphicsView.imItem.map_dir = filepath
             else:
                 pm_old = self.graphicsView.imItem.pixmap()

@@ -640,11 +640,10 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         删除槽函数
         '''
         if self.frame.dir_img:
-            os.remove(self.frame.dir_img)
             self.frame.dir_img = None
-        self.frame.imQT, self.frame.CV = None, None
+        self.frame.imQT, self.frame.CV = None, ipc.AppImg()
         self.frame.repaint()
-        self.frame_2.dir_img, self.frame_2.imQT, self.frame_2.CV = None, None, None
+        self.frame_2.dir_img, self.frame_2.imQT, self.frame_2.CV = None, None, ipc.AppImg()
         self.frame_2.repaint()
 
     def iaedit(self, MainWindow):
