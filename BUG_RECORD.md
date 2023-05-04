@@ -18,7 +18,9 @@ dist文件夹里加入含“西工大校徽标缩小.png”的Icons文件夹
 
 # WINDOWS发布版
 打包命令：
-pyinstaller -i Icons/App.ico -F main.py -w -o ImageProcessorAPP-Vx.x.x-Windows
+pyinstaller -i Icons/App.ico -F main.py -w
+新建 ImageProcessorAPP-Vx.x.x-Windows 文件夹
+把生成的build、dist、main.spec移动到该文件夹中
 dist文件夹里加入含“西工大校徽标缩小.png”和“App.ico”的Icons文件夹
 
 ## V1.0.5
