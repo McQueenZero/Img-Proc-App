@@ -1,6 +1,8 @@
 # LINUX发布版
 打包命令：
-pyinstaller -F main.py -o ImageProcessorAPP-Vx.x.x-Linux
+pyinstaller -F main.py
+新建 ImageProcessorAPP-Vx.x.x-Linux 文件夹
+把生成的build、dist、main.spec移动到该文件夹中
 dist文件夹里加入含“西工大校徽标缩小.png”的Icons文件夹
 
 ## V1.0.2
