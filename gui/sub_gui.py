@@ -365,8 +365,8 @@ class Ui_SubWindow(QtWidgets.QWidget):
             self.pushButton_F2.setEnabled(True)
 
         self.textEdit.show()
-        self.textEdit.setEnabled(True)
-        self.textEdit.textChanged.connect(self.aspectratioset)
+        self.textEdit.setEnabled(False)
+        self.textEdit.setText("")
         self.comboBox.hide()
 
         FcnObjs = [self.pushButton_1, self.pushButton_2, self.pushButton_3,
@@ -390,7 +390,7 @@ class Ui_SubWindow(QtWidgets.QWidget):
         self.pushButton_F1.setText(_translate("SubWindow", "旋转"))
         self.pushButton_F2.setText(_translate("SubWindow", "镜像"))
 
-        self.pushButton_1.setText(_translate("SubWindow", "原始"))
+        self.pushButton_1.setText(_translate("SubWindow", "(单击)原始\n(双击)自定义\n格式为 n:n"))
         self.pushButton_2.setText(_translate("SubWindow", "1:1"))
         self.pushButton_3.setText(_translate("SubWindow", "16:9"))
         self.pushButton_4.setText(_translate("SubWindow", "9:16"))
@@ -505,6 +505,8 @@ class Ui_SubWindow(QtWidgets.QWidget):
         self.pushButton_F2.setCheckable(False)
         self.textEdit.show()
         self.textEdit.setEnabled(False)
+        self.textEdit.setText("")
+        self.aspectratioset()
         self.comboBox.show()
         self.comboBox.setEnabled(False)
 
@@ -711,6 +713,13 @@ class Ui_SubWindow(QtWidgets.QWidget):
         裁剪槽函数
         用于传送固定宽高比
         '''
+        try:
+            self.textEdit.disconnect()
+        except TypeError:
+            print('No TextEdit Reused Signal Connect!')
+        else:
+            print('TextEdit Reused Signal Disconnected!')
+
         if self.pushButton_1.isChecked():
             self.textEdit.setEnabled(False)
             self.aspectratioset(self.graphicsView.imItem.pixmap().width() / self.graphicsView.imItem.pixmap().height())
@@ -732,6 +741,7 @@ class Ui_SubWindow(QtWidgets.QWidget):
         else:
             self.textEdit.setEnabled(True)
             self.aspectratioset()
+            self.textEdit.textChanged.connect(self.aspectratioset)
 
     def rotate(self):
         '''
@@ -828,25 +838,22 @@ class Ui_SubWindow(QtWidgets.QWidget):
             if ':' in input_str:
                 input_list = input_str.split(':')
 
+                self.graphicsView.imItem.AspectRatio = ar
+                self.AspectRatio = ar
+
                 if len(input_list) != 2:
-                    self.textEdit.setText("格式错误！提示：先输入全部数字，后输入冒号")
-                    self.graphicsView.imItem.AspectRatio = ar
-                    self.AspectRatio = ar
+                    self.textEdit.setText("请输入两个正整数\n提示：先输所有数字，后插冒号分割")
                     return
 
                 try:
                     width = int(input_list[0])
                     height = int(input_list[1])
                 except ValueError:
-                    self.textEdit.setText("格式错误！提示：先输入全部数字，后输入冒号")
-                    self.graphicsView.imItem.AspectRatio = ar
-                    self.AspectRatio = ar
+                    self.textEdit.setText("请输入数字而非其他字符\n提示：先输所有数字，后插冒号分割")
                     return
 
-                if width < 0 or height <= 0:
-                    self.textEdit.setText("格式错误！提示：先输入全部数字，后输入冒号")
-                    self.graphicsView.imItem.AspectRatio = ar
-                    self.AspectRatio = ar
+                if width <= 0 or height <= 0:
+                    self.textEdit.setText("请输入正整数\n提示：先输所有数字，后插冒号分割")
                     return
 
                 ar = width / height

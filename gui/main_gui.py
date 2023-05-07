@@ -513,9 +513,11 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.frame.imQT = self.Clipboard.image()
         if not self.frame.imQT.isNull():
             now = datetime.datetime.now()
-            filename = "Clipboard " + now.strftime("%Y-%m-%d %H-%M-%S") + ".png"
-            self.InputDir = "./InputImages" + '/' + filename
-            self.OutputDir = "./OutputImages"
+            ext = ".png"
+            filename = "Clipboard " + now.strftime("%Y-%m-%d %H-%M-%S")
+            self.InputDir = "./InputImages" + '/' + filename + ext
+            new_filename = filename + "_edit" + ext
+            self.OutputDir = "./OutputImages" + '/' + new_filename
             self.frame.imQT.save(self.InputDir)
 
             self.frame.CV.Q2CVimg(self.frame.imQT)

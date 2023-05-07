@@ -19,7 +19,7 @@ class ImgFrame(QtWidgets.QFrame):
         self.setStyleSheet("border-width: 1px;border-style: solid;border-color: rgb(114, 114, 114);")
 
         self.CV = AppImg()  # AppImg的CV格式图片
-        self.dir_img = None  # 路径及文件名，用于删除或保存功能
+        self.dir_img = None  # 路径及文件名，用于保存功能
         self.AdaptedFlag = True  # 图窗自适应标识符，默认缩略图自适应图窗大小
         self.imQT = None  # QImage格式图片
         self.tn = None  # 放入frame图窗显示的经过缩放的图（thumbnail）
@@ -127,6 +127,7 @@ class ImgFrame(QtWidgets.QFrame):
         filename = "./InputImages/" + "Drop " + now.strftime("%Y-%m-%d %H-%M-%S") + ".png"
 
         if event.mimeData().hasImage():
+            self.dir_img = filename
             self.imQT = QtGui.QImage(event.mimeData().imageData())
             self.imQT.save(filename)
         elif event.mimeData().hasUrls():
